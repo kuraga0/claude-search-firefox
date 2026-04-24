@@ -36,7 +36,7 @@
 
   // ── Parse flags ────────────────────────────────────────────────
   const MODEL_FLAGS = {
-    "-opus": "opus",    "-o": "opus",
+    "-opus": "opus",     "-o": "opus",
     "-sonnet": "sonnet", "-s": "sonnet",
     "-haiku": "haiku",   "-h": "haiku",
   };
@@ -52,6 +52,7 @@
     } else if (lower === "-wait" || lower === "-w") {
       autoSend = false;
     } else {
+			model = localStorage.getItem("lastModel");
       promptTokens.push(tok);
     }
   }
@@ -217,7 +218,7 @@
   // Attempt model selection
   try {
     await trySelectModel(model);
-    await sleep(400);
+		await sleep(400);
   } catch (e) {
     console.warn("[Claude Search] Model selection failed:", e.message);
   }
@@ -232,6 +233,9 @@
     await sleep(600);
     await tryAutoSubmit();
   }
+
+	// Save last used model
+	localStorage.setItem("lastModel", targetModel);
 
   console.log(`[Claude Search] Done — ${prompt.length} chars → ${model}${autoSend ? " [sent]" : " [waiting]"}`);
 })();
