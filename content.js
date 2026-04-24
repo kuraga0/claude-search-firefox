@@ -47,12 +47,12 @@
 
   for (const tok of rawQuery.trim().split(/\s+/)) {
     const lower = tok.toLowerCase();
-    if (MODEL_FLAGS[lower]) {
+		model = localStorage.getItem("lastModel");
+		if (MODEL_FLAGS[lower]) {
       model = MODEL_FLAGS[lower];
     } else if (lower === "-wait" || lower === "-w") {
       autoSend = false;
     } else {
-			model = localStorage.getItem("lastModel");
       promptTokens.push(tok);
     }
   }
@@ -235,7 +235,7 @@
   }
 
 	// Save last used model
-	localStorage.setItem("lastModel", targetModel);
+	localStorage.setItem("lastModel", model);
 
   console.log(`[Claude Search] Done — ${prompt.length} chars → ${model}${autoSend ? " [sent]" : " [waiting]"}`);
 })();
